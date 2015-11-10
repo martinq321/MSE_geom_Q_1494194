@@ -12,9 +12,9 @@ linesPt[xmin1_, xmax1_, line1_, line2_, ptt1_] :=
     b = Rationalize@CoefficientList[line1, x][[1]], 
     c = Rationalize@CoefficientList[line2, x][[2]], 
     d = Rationalize@CoefficientList[line2, x][[1]]}, 
-   With[{dist = (n /. 
-        Solve[rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, 
-            c n + d}] == EuclideanDistance[ptt, {n, c n + d}], n])}, 
+   With[{dist = (x /. 
+        Solve[rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {x, 
+            c x + d}] == EuclideanDistance[ptt, {x, c x + d}], x])}, 
     With[{n = dist[[1]], m = dist[[2]]}, 
      With[{g = 
         perp[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, c n + d}], 

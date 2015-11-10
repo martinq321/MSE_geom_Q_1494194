@@ -1,3 +1,4 @@
+Clear[x]
 perp[{start_, end_}, pt_] := 
  Module[{param = ((pt - start).(end - start))/
      Norm[end - start]^2}, (start + Clip[param, {0, 1}] (end - start))]

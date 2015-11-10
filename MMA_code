@@ -1,4 +1,4 @@
-Clear[x]
+Clear[x,r]
 perp[{start_, end_}, pt_] := 
  Module[{param = ((pt - start).(end - start))/
      Norm[end - start]^2}, (start + Clip[param, {0, 1}] (end - start))]
@@ -37,5 +37,5 @@ linesPt[xmin1_, xmax1_, line1_, line2_, ptt1_] :=
           }, Frame -> True, GridLines -> {{0}, {0}}, 
          AspectRatio -> Automatic, ImageSize -> 500, 
          PlotRange -> {{xmin, xmax}, {c xmax + d, 
-            a xmax + b}}], {TraditionalForm[Subscript[D, 1] == N@d1], 
-            TraditionalForm[Subscript[D, 2] == N@d2]}}]]]]]]
+            a xmax + b}}], {TraditionalForm[Subscript[r, 1] == N@d1], 
+            TraditionalForm[Subscript[r, 2] == N@d2]}}]]]]]]

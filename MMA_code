@@ -4,29 +4,37 @@ perp[{start_, end_}, pt_] :=
 rad[{start_, end_}, pt_] := 
  Module[{param = ((pt - start).(end - start))/Norm[end - start]^2}, 
   EuclideanDistance[pt, start + Clip[param, {0, 1}] (end - start)]]
-linesPt[xmin_, xmax_, line1_, line2_, ptt_] := 
- With[{a = CoefficientList[line1, x][[2]], 
-   b = CoefficientList[line1, x][[1]], 
-   c = CoefficientList[line2, x][[2]], 
-   d = CoefficientList[line2, x][[1]]}, 
-  With[{dist = 
-     Rest@Most@(n /. 
-         Quiet@Solve[
-           rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, 
-              c n + d}] == EuclideanDistance[ptt, {n, c n + d}], n])},
+linesPt[xmin1_, xmax1_, line1_, line2_, ptt1_] := 
+ With[{xmin = Rationalize@xmin1, xmax = Rationalize@xmax1, 
+   ptt = Rationalize@ptt1}, 
+  With[{a = Rationalize@CoefficientList[line1, x][[2]], 
+    b = Rationalize@CoefficientList[line1, x][[1]], 
+    c = Rationalize@CoefficientList[line2, x][[2]], 
+    d = Rationalize@CoefficientList[line2, x][[1]]}, 
+   With[{dist = (n /. 
+        Quiet@Solve[
+          rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, 
+             c n + d}] == EuclideanDistance[ptt, {n, c n + d}], n])}, 
     With[{n = dist[[1]], m = dist[[2]]}, 
-    Graphics[{Point[ptt], 
-      Line@# & /@ {{{xmin, a xmin + b}, {xmax, a xmax + b}}, {{xmin, 
-          c xmin + d}, {xmax, c xmax + d}}}, Red, 
-      Line@# & /@ {{{n, c n + d}, 
-         perp[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, 
-           c n + d}]}, {{n, c n + d}, ptt}}, 
-      Circle[{n, c n + d}, 
-       rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, c n + d}]], 
-      Blue, Line@# & /@ {{{m, c m + d}, 
-         perp[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {m, 
-           c m + d}]}, {{m, c m + d}, ptt}}, 
-      Circle[{m, c m + d}, 
-       rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {m, c m + d}]]
-      }, Frame -> True, AspectRatio -> Automatic, 
-     PlotRange -> {{xmin, xmax}, {c xmax + d, a xmax + b}}]]]]
+     With[{g = 
+        perp[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, c n + d}], 
+       f = {n, c n + d}, 
+       i = 
+        perp[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {m, c m + d}], 
+       h = {m, c m + d}, 
+       d1 = rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, 
+          c n + d}], 
+       d2 = rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {m, 
+          c m + d}]}, 
+      Column[{Graphics[{Point[ptt], 
+          Line@# & /@ {{{xmin, a xmin + b}, {xmax, 
+              a xmax + b}}, {{xmin, c xmin + d}, {xmax, c xmax + d}}},
+           Red, Line@# & /@ {{f, g}, {{n, c n + d}, ptt}}, 
+          Circle[{n, c n + d}, d1], Blue, 
+          Line@# & /@ {{h, i}, {{m, c m + d}, ptt}}, 
+          Circle[{m, c m + d}, d2]
+          }, Frame -> True, GridLines -> {{0}, {0}}, 
+         AspectRatio -> Automatic, ImageSize -> 500, 
+         PlotRange -> {{xmin, xmax}, {c xmax + d, 
+            a xmax + b}}], {Subscript[D, 1] == N@d1, 
+         Subscript[D, 2] == N@d2}}]]]]]]

@@ -12,7 +12,7 @@ linesPt[xmin1_, xmax1_, line1_, line2_, ptt1_] :=
     c = Rationalize@CoefficientList[line2, x][[2]], 
     d = Rationalize@CoefficientList[line2, x][[1]]}, 
    With[{dist = (n /. 
-        Quiet@Solve[
+        Solve[
           rad[{{xmin, a xmin + b}, {xmax, a xmax + b}}, {n, 
              c n + d}] == EuclideanDistance[ptt, {n, c n + d}], n])}, 
     With[{n = dist[[1]], m = dist[[2]]}, 

@@ -9,8 +9,8 @@ rp[xmax_, line1_, line2_] :=
  With[{eq = {line1, line2}}, 
   With[{aa = eq /. x -> xmax}, 
    With[{eq1 = eq[[Flatten[Position[aa, Max@aa]][[1]]]], 
-     eq2 = eq[[Flatten[Position[aa, Min@aa]][[1]]]]},
-    With[{int = Evaluate[(x /. Solve[eq1 == eq2, x][[1]])]},
+     eq2 = eq[[Flatten[Position[aa, Min@aa]][[1]]]]}, 
+    With[{int = Evaluate[(x /. Solve[eq1 == eq2, x][[1]])]}, 
      RandomPoint[
       ImplicitRegion[
        y <= eq1 && y >= eq2 && int <= x <= xmax - (xmax - int)/2, {x, 
@@ -46,4 +46,5 @@ linesPt[xmin1_, xmax1_, line1_, line2_, ptt1_] :=
             a xmax + b}}], {TraditionalForm[Subscript[r, 1] == N@d1], 
          TraditionalForm[Subscript[r, 2] == N@d2]}}]]]]]]
 linesPt[xmin1_, xmax1_, line1_, line2_] := 
- Quiet@linesPt[xmin1, xmax1, line1, line2, rp[xmax1, line1, line2]]
+ linesPt[xmin1, xmax1, line1, line2, 
+  Rationalize[rp[xmax1, line1, line2], 10^(-6)]]
